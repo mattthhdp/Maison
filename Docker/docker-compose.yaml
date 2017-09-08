@@ -8,7 +8,7 @@ services:
     image: binhex/arch-deluge:lastest
     container_name: Deluge
     restart: always
-    environement:
+    environment:
       PUID=1000
       PGID=1000
       UMASK=0000
@@ -16,7 +16,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/deluge/config:/config
       - /home/jaune/docker/deluge/download:/data
-    port:
+    ports:
       - "8112:8112"
       - "58846:58846"
       - "58946:58946"
@@ -26,7 +26,7 @@ services:
     image: linuxserver/sickrage:lastest
     container_name: SickRage
     restart: always
-    environement:
+    environment:
       PUID=1000
       PGID=1000
       UMASK=0000
@@ -35,42 +35,42 @@ services:
       - /home/jaune/docker/sickrage/config:/config
       - /home/jaune/docker/sickrage/download:/downloads
       - /home/jaune/docker/sickrage/download:/tv
-    port:
+    ports:
       - "8081:8081"
 ### Organizr Config ###
   organizr:
     image: lsiocommunity/organizr:lastest
     container_name: Organizr
     restart: always
-    environement:
+    environment:
       PUID=1000
       PGID=1000
       UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/organizr/config:/config
-    port:
+    ports:
       - "80:80"
 ### Ombi Config ###
   ombi:
     image: linuxserver/ombi:lastest
     container_name: Ombi
     restart: always
-    environement:
+    environment:
       PUID=1000
       PGID=1000
       UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/ombi/config:/config
-    port:
+    ports:
       - "3579:3579"
 ### Couchpotato Config ###
   couchpotato:
     image: linuxserver/couchpotato:lastest
     container_name: Couchpotato
     restart: always
-    environement:
+    environment:
       PUID=1000
       PGID=1000
       UMASK=0000
@@ -79,14 +79,14 @@ services:
       - /home/jaune/docker/couchpotato/config:/config
       - /home/jaune/docker/couchpotato/download:/downloads
       - /home/jaune/docker/couchpotato/download:/movies
-    port:
+    ports:
       - "5050:5050"
 ### Radarr Config ###
   radarr:
     image: linuxserver/radarr
     container_name: Radarr
     restart: always
-    environement:
+    environment:
       PUID=1000
       PGID=1000
       UMASK=0000
@@ -95,7 +95,7 @@ services:
       - /home/jaune/docker/radarr/config:/config
       - /home/jaune/docker/radarr/download:/downloads
       - /home/jaune/docker/radarr/download:/movies
-    port:
+    ports:
       - "7878:7878"
 ### Home-Assistant Config ###
 ## To do
