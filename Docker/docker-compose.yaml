@@ -1,17 +1,15 @@
 ### Config des different container ###
 version: '2'
-
 services:
-
 ### Deluge Config ###
   deluge:
-    image: binhex/arch-deluge:lastest
+    image: binhex/arch-deluge
     container_name: Deluge
     restart: always
     environment:
-      PUID=1000
-      PGID=1000
-      UMASK=0000
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/deluge/config:/config
@@ -23,13 +21,13 @@ services:
 
 ### Sickrage Config ###
   sickrage:
-    image: linuxserver/sickrage:lastest
+    image: linuxserver/sickrage
     container_name: SickRage
     restart: always
     environment:
-      PUID=1000
-      PGID=1000
-      UMASK=0000
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/sickrage/config:/config
@@ -39,13 +37,13 @@ services:
       - "8081:8081"
 ### Organizr Config ###
   organizr:
-    image: lsiocommunity/organizr:lastest
+    image: lsiocommunity/organizr
     container_name: Organizr
     restart: always
     environment:
-      PUID=1000
-      PGID=1000
-      UMASK=0000
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/organizr/config:/config
@@ -53,13 +51,13 @@ services:
       - "80:80"
 ### Ombi Config ###
   ombi:
-    image: linuxserver/ombi:lastest
+    image: linuxserver/ombi
     container_name: Ombi
     restart: always
     environment:
-      PUID=1000
-      PGID=1000
-      UMASK=0000
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/ombi/config:/config
@@ -67,13 +65,13 @@ services:
       - "3579:3579"
 ### Couchpotato Config ###
   couchpotato:
-    image: linuxserver/couchpotato:lastest
+    image: linuxserver/couchpotato
     container_name: Couchpotato
     restart: always
     environment:
-      PUID=1000
-      PGID=1000
-      UMASK=0000
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/couchpotato/config:/config
@@ -87,9 +85,9 @@ services:
     container_name: Radarr
     restart: always
     environment:
-      PUID=1000
-      PGID=1000
-      UMASK=0000
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/radarr/config:/config
@@ -97,5 +95,37 @@ services:
       - /home/jaune/docker/radarr/download:/movies
     ports:
       - "7878:7878"
+### Emby Config ###
+  emby:
+    image: dperson/emby
+    container_name: Emby
+    restart: always
+    environment:
+      - APP_UID=1000
+      - APP_GID=1000
+    volumes:
+      - /home/jaune/docker/emby/config:/config
+      - /home/jaune/docker/emby/media:/media
+    ports:
+      - "8096:8096"
+      - "7359:7359"
+      - "1900:1900"
+
+### Unifi Controller ###
+  unifi:
+    image: linuxserver/unifi
+    container_name: Unifi
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/jaune/docker/unifi/config:/config
+    ports:
+      - "8090:8080"
+      - "8091:8081"
+      - "8453:8443"
+      - "8853:8843"
+      - "8890:8880"
 ### Home-Assistant Config ###
 ## To do
