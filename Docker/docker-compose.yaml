@@ -5,7 +5,7 @@ services:
   deluge:
     image: binhex/arch-deluge
     container_name: Deluge
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=1000
       - GUID=1000
@@ -18,12 +18,11 @@ services:
       - "8112:8112"
       - "58846:58846"
       - "58946:58946"
-
 ### Sickrage Config ###
   sickrage:
     image: linuxserver/sickrage
     container_name: SickRage
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=1000
       - GUID=1000
@@ -39,7 +38,7 @@ services:
   organizr:
     image: lsiocommunity/organizr
     container_name: Organizr
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=1000
       - GUID=1000
@@ -49,41 +48,27 @@ services:
       - /home/jaune/docker/organizr/config:/config
     ports:
       - "80:80"
-### Ombi Config ###
-  ombi:
-    image: linuxserver/ombi
-    container_name: Ombi
-    restart: always
-    environment:
-      - PUID=1000
-      - GUID=1000
-      - UMASK=0000
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /home/jaune/docker/ombi/config:/config
-    ports:
-      - "3579:3579"
 ### Couchpotato Config ###
-  couchpotato:
-    image: linuxserver/couchpotato
-    container_name: Couchpotato
-    restart: always
-    environment:
-      - PUID=1000
-      - GUID=1000
-      - UMASK=0000
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /home/jaune/docker/couchpotato/config:/config
-      - /home/jaune/docker/couchpotato/download:/downloads
-      - /home/jaune/docker/couchpotato/download:/movies
-    ports:
-      - "5050:5050"
+#  couchpotato:
+#    image: linuxserver/couchpotato
+#    container_name: Couchpotato
+#    restart: unless-stopped
+#    environment:
+#      - PUID=1000
+#      - GUID=1000
+#      - UMASK=0000
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - /home/jaune/docker/couchpotato/config:/config
+#      - /home/jaune/docker/couchpotato/download:/downloads
+#      - /home/jaune/docker/couchpotato/download:/movies
+#    ports:
+#      - "5050:5050"
 ### Radarr Config ###
   radarr:
     image: linuxserver/radarr
     container_name: Radarr
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=1000
       - GUID=1000
@@ -99,7 +84,7 @@ services:
   emby:
     image: dperson/emby
     container_name: Emby
-    restart: always
+    restart: unless-stopped
     environment:
       - APP_UID=1000
       - APP_GID=1000
@@ -113,19 +98,36 @@ services:
 
 ### Unifi Controller ###
   unifi:
-    image: linuxserver/unifi
+    image: goofball222/unifi
     container_name: Unifi
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /home/jaune/docker/unifi/config:/config
+      - /home/jaune/docker/unifi/certs:/usr/lib/unifi/cert
+      - /home/jaune/docker/unifi/data:/usr/lib/unifi/data
+      - /home/jaune/docker/unifi/logs:/usr/lib/unifi/logs
     ports:
-      - "8090:8080"
-      - "8091:8081"
-      - "8453:8443"
-      - "8853:8843"
-      - "8890:8880"
+      - "3478:3478/udp"
+      - "6789:6789"
+      - "8080:8080"
+      - "8443:8443"
+      - "8880:8880"
+      - "8843:8843"
+      - "10001:10001/udp"
+    network_mode: "host"
+
+###Portainer Config ###
+  portainer:
+    image: portainer/portainer
+    container_name: Portainer
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/jaune/docker/portainer:/data portainer/portainer
+    ports:
+      - "9000:9000"
 ### Home-Assistant Config ###
 ## To do
+
