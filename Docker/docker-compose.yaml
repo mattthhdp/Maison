@@ -13,7 +13,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/deluge/config:/config
-      - /home/jaune/docker/deluge/download:/data
+      - /home/jaune/DATA:/data
     ports:
       - "8112:8112"
       - "58846:58846"
@@ -30,14 +30,14 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/jaune/docker/sickrage/config:/config
-      - /home/jaune/docker/sickrage/download:/downloads
-      - /home/jaune/docker/sickrage/download:/tv
+      - /home/jaune/DATA:/downloads
+      - /home/jaune/DATA:/tv
     ports:
       - "8081:8081"
-### Organizr Config ###
-  organizr:
-    image: lsiocommunity/organizr
-    container_name: Organizr
+### htpcmanager Config ###
+  htpcmanager:
+    image: linuxserver/htpcmanager
+    container_name: HtpcManager
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -45,41 +45,56 @@ services:
       - UMASK=0000
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /home/jaune/docker/organizr/config:/config
+      - /home/jaune/docker/htpcmanager/config:/config
     ports:
-      - "80:80"
+      - "80:8085"
 ### Couchpotato Config ###
-#  couchpotato:
-#    image: linuxserver/couchpotato
-#    container_name: Couchpotato
-#    restart: unless-stopped
-#    environment:
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: Couchpotato
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/jaune/docker/couchpotato/config:/config
+      - /home/jaune/DATA:/downloads
+      - /home/jaune/DATA:/movies
+    ports:
+      - "5050:5050"
+### Jackett Config ###
+  jackett:
+    image: linuxserver/jackett
+    container_name: Jackett
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - GUID=1000
+      - UMASK=0000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/jaune/docker/jackett/config:/config
+      - /home/jaune/DATA:/downloads
+    ports:
+      - "9117:9117"
+### Radarr Config ###
+#  radarr:
+#   image: linuxserver/radarr
+#   container_name: Radarr
+#   restart: unless-stopped
+#   environment:
 #      - PUID=1000
 #      - GUID=1000
 #      - UMASK=0000
 #    volumes:
 #      - /etc/localtime:/etc/localtime:ro
-#      - /home/jaune/docker/couchpotato/config:/config
-#      - /home/jaune/docker/couchpotato/download:/downloads
-#      - /home/jaune/docker/couchpotato/download:/movies
+#      - /home/jaune/docker/radarr/config:/config
+#      - /home/jaune/docker/radarr/download:/downloads
+#      - /home/jaune/docker/radarr/download:/movies
 #    ports:
-#      - "5050:5050"
-### Radarr Config ###
-  radarr:
-    image: linuxserver/radarr
-    container_name: Radarr
-    restart: unless-stopped
-    environment:
-      - PUID=1000
-      - GUID=1000
-      - UMASK=0000
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /home/jaune/docker/radarr/config:/config
-      - /home/jaune/docker/radarr/download:/downloads
-      - /home/jaune/docker/radarr/download:/movies
-    ports:
-      - "7878:7878"
+#      - "7878:7878"
 ### Emby Config ###
   emby:
     image: dperson/emby
@@ -90,12 +105,11 @@ services:
       - APP_GID=1000
     volumes:
       - /home/jaune/docker/emby/config:/config
-      - /home/jaune/docker/emby/media:/media
+      - /home/jaune/DATA:/media
     ports:
       - "8096:8096"
       - "7359:7359"
       - "1900:1900"
-
 ### Unifi Controller ###
   unifi:
     image: goofball222/unifi
@@ -117,7 +131,8 @@ services:
       - "8843:8843"
       - "10001:10001/udp"
     network_mode: "host"
-
+### Home-Assistant Config ###
+## To do
 ###Portainer Config ###
   portainer:
     image: portainer/portainer
@@ -128,6 +143,3 @@ services:
       - /home/jaune/docker/portainer:/data portainer/portainer
     ports:
       - "9000:9000"
-### Home-Assistant Config ###
-## To do
-
