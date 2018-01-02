@@ -20,7 +20,7 @@ services:
       - "58946:58946"
 ### Sickrage Config ###
   sickrage:
-    image: linuxserver/sickrage
+    image: sickrage/sickrage
     container_name: SickRage
     restart: unless-stopped
     environment:
@@ -79,25 +79,9 @@ services:
       - /home/jaune/DATA:/downloads
     ports:
       - "9117:9117"
-### Radarr Config ###
-#  radarr:
-#   image: linuxserver/radarr
-#   container_name: Radarr
-#   restart: unless-stopped
-#   environment:
-#      - PUID=1000
-#      - GUID=1000
-#      - UMASK=0000
-#    volumes:
-#      - /etc/localtime:/etc/localtime:ro
-#      - /home/jaune/docker/radarr/config:/config
-#      - /home/jaune/docker/radarr/download:/downloads
-#      - /home/jaune/docker/radarr/download:/movies
-#    ports:
-#      - "7878:7878"
 ### Emby Config ###
   emby:
-    image: dperson/emby
+    image: emby/embyserver
     container_name: Emby
     restart: unless-stopped
     environment:
@@ -108,8 +92,9 @@ services:
       - /home/jaune/DATA:/media
     ports:
       - "8096:8096"
-      - "7359:7359"
-      - "1900:1900"
+      - "8920:8920"
+      - "7359:7359/udp"
+      - "1900:1900/udp"
 ### Unifi Controller ###
   unifi:
     image: goofball222/unifi
@@ -132,7 +117,13 @@ services:
       - "10001:10001/udp"
     network_mode: "host"
 ### Home-Assistant Config ###
-## To do
+  homeassistant:
+    image: homeassistant/home-assistant
+    volumes:
+      - /home/jaune/docker/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    network_mode: host
 ###Portainer Config ###
   portainer:
     image: portainer/portainer
