@@ -125,4 +125,24 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/jaune/docker/portainer:/data portainer/portainer
     ports:
-      - "9000:9000"
+      - "9000:9000"     
+###Mosquitto MQTT Broker ###
+  mqtt:
+    image: ansi/mosquitto
+    container_name: Mosquitto
+    restart: unless-stopped
+    volumes:
+      - ./etc/mosquitto:/etc/mosquitto:ro
+      - ./var/log/mosquitto:/var/log/mosquitto:rw
+    ports:
+      - 1883:1883
+    entrypoint: /usr/local/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+###Home assistant Config ###
+  homeassistant:
+    image: homeassistant/home-assistant
+    container_name: Home-Assistant
+    restart: always
+    volumes:
+      - /home/jaune/docker/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: host
