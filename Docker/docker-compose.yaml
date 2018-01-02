@@ -119,6 +119,7 @@ services:
 ### Home-Assistant Config ###
   homeassistant:
     image: homeassistant/home-assistant
+    container_name: Home-Assistant
     volumes:
       - /home/jaune/docker/homeassistant/config:/config
       - /etc/localtime:/etc/localtime:ro
