@@ -1,5 +1,5 @@
 ### Config des different container ###
-version: '2'
+version: '2' 
 services:
 ### Deluge Config ###
   deluge:
@@ -125,24 +125,26 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/jaune/docker/portainer:/data portainer/portainer
     ports:
-      - "9000:9000"     
+      - "9000:9000"
+ 
 ###Mosquitto MQTT Broker ###
   mqtt:
-    image: ansi/mosquitto
+    image: eclipse-mosquitto
     container_name: Mosquitto
     restart: unless-stopped
     volumes:
-      - ./etc/mosquitto:/etc/mosquitto:ro
-      - ./var/log/mosquitto:/var/log/mosquitto:rw
+      - /home/jaune/docker/mosquitto/config:/mosquitto/config
+      - /home/jaune/docker/mosquitto/log:/mosquitto/log
+      - /home/jaune/docker/mosquitto/data:/mosquitto/data
     ports:
       - 1883:1883
-    entrypoint: /usr/local/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+      - 9001:9001
 ###Home assistant Config ###
   homeassistant:
     image: homeassistant/home-assistant
     container_name: Home-Assistant
     restart: always
     volumes:
-      - /home/jaune/docker/homeassistant:/config
+      - /home/jaune/docker/homeassistant/config:/config
       - /etc/localtime:/etc/localtime:ro
     network_mode: host
