@@ -34,20 +34,16 @@ services:
       - /home/jaune/DATA:/tv
     ports:
       - "8081:8081"
-### htpcmanager Config ###
-  htpcmanager:
-    image: linuxserver/htpcmanager
-    container_name: HtpcManager
-    restart: unless-stopped
-    environment:
-      - PUID=1000
-      - GUID=1000
-      - UMASK=0000
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /home/jaune/docker/htpcmanager/config:/config
-    ports:
-      - "80:8085"
+### Muximux Config ###
+  muximux:
+      image: linuxserver/muximux
+      container_name: Muximux
+      volumes:
+          - /home/jaune/docker/muximux/config:/config
+          - /etc/localtime:/etc/localtime:ro
+      ports:
+        - 80:80
+      restart: always
 ### Couchpotato Config ###
   couchpotato:
     image: linuxserver/couchpotato
